@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blox Fruit - VIP Server Hub</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --cyan: #00f2ff;
+            --purple: #b026ff;
+            --bg: #050505;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: #fff;
+            font-family: 'Montserrat', sans-serif;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        header {
+            text-align: center;
+            padding: 50px 20px;
+        }
+
+        header h1 {
+            font-size: 3rem;
+            margin: 0;
+            background: linear-gradient(to right, var(--cyan), var(--purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-transform: uppercase;
+        }
+
+        /* Nút Join Chính - To nhất */
+        .main-join {
+            margin-bottom: 50px;
+        }
+
+        .btn-huge {
+            display: inline-block;
+            padding: 20px 60px;
+            background: linear-gradient(90deg, var(--cyan), var(--purple));
+            color: #fff;
+            text-decoration: none;
+            font-size: 1.5rem;
+            font-weight: 900;
+            border-radius: 50px;
+            box-shadow: 0 0 30px rgba(0, 242, 255, 0.5);
+            transition: 0.3s;
+            text-transform: uppercase;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); box-shadow: 0 0 20px rgba(0, 242, 255, 0.5); }
+            50% { transform: scale(1.05); box-shadow: 0 0 40px rgba(176, 38, 255, 0.7); }
+            100% { transform: scale(1); box-shadow: 0 0 20px rgba(0, 242, 255, 0.5); }
+        }
+
+        /* Danh sách hoạt động */
+        .activity-list {
+            width: 90%;
+            max-width: 600px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 20px;
+            backdrop-filter: blur(10px);
+        }
+
+        .activity-item {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            transition: 0.3s;
+        }
+
+        .activity-item:last-child { border-bottom: none; }
+
+        .activity-item i {
+            font-size: 24px;
+            margin-right: 20px;
+            width: 40px;
+            text-align: center;
+        }
+
+        .fa-dragon { color: #00f2ff; } /* Leviathan */
+        .fa-volcano { color: #ff4500; } /* Núi lửa */
+        .fa-skull { color: #ff007f; }   /* Bounty */
+
+        .activity-info h3 { margin: 0; font-size: 16px; color: #fff; }
+        .activity-info p { margin: 5px 0 0; font-size: 12px; color: #aaa; }
+
+        /* Thông báo nổi */
+        #toast-container { position: fixed; bottom: 20px; left: 20px; z-index: 9999; }
+        .toast {
+            background: rgba(20, 20, 20, 0.9);
+            border-left: 4px solid var(--cyan);
+            padding: 12px 20px;
+            border-radius: 8px;
+            margin-top: 10px;
+            font-size: 13px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+            animation: slideIn 0.5s ease forwards;
+        }
+
+        @keyframes slideIn { from { transform: translateX(-120%); } to { transform: translateX(0); } }
+    </style>
+</head>
+<body>
+
+<header>
+    <p style="color: var(--cyan); font-weight: bold; letter-spacing: 2px;">ONLINE PRIVATE SERVER</p>
+    <h1>KAIZEN HUB</h1>
+</header>
+
+<div class="main-join">
+    <a href="https://www.roblox.com/share?code=b03f28d858c1c843a53f476467fa3627&type=Server" target="_blank" class="btn-huge">
+        <i class="fas fa-play" style="margin-right: 10px;"></i> JOIN SERVER VIP
+    </a>
+</div>
+
+<div class="activity-list">
+    <div class="activity-item">
+        <i class="fas fa-dragon"></i>
+        <div class="activity-info">
+            <h3>SĂN LEVIATHAN</h3>
+            <p>Đang gom team đi biển tìm Tim Leviathan...</p>
+        </div>
+    </div>
+
+    <div class="activity-item">
+        <i class="fas fa-volcano"></i>
+        <div class="activity-info">
+            <h3>BOSS NÚI LỬA</h3>
+            <p>Farm nguyên liệu và tiền tại đảo Núi Lửa.</p>
+        </div>
+    </div>
+
+    <div class="activity-item">
+        <i class="fas fa-skull"></i>
+        <div class="activity-info">
+            <h3>SĂN BOUNTY</h3>
+            <p>Khu vực PvP công bằng, không hack/cheat.</p>
+        </div>
+    </div>
+</div>
+
+<div id="toast-container"></div>
+
+<script>
+    const players = ["Duy_Blox", "KingVN", "Mạnh_Pro", "Hùng_Levi", "Zoro_Cute", "Admin_K"];
+    const actions = ["vừa vào săn Leviathan", "đang farm Núi Lửa", "vừa hạ gục Boss", "vừa tham gia Server"];
+
+    function showToast() {
+        const container = document.getElementById('toast-container');
+        const name = players[Math.floor(Math.random()*players.length)];
+        const action = actions[Math.floor(Math.random()*actions.length)];
+        
+        const toast = document.createElement('div');
+        toast.className = 'toast';
+        toast.innerHTML = `<b>${name}</b> ${action}`;
+        container.appendChild(toast);
+        setTimeout(() => { toast.remove(); }, 4000);
+    }
+
+    setInterval(showToast, 6000);
+    setTimeout(showToast, 1000);
+</script>
+
+</body>
+</html>
